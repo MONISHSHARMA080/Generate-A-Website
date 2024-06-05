@@ -11,8 +11,8 @@ WORKDIR /app/django
 COPY ./django/ ./
 RUN rm db.sqlite3
 RUN ls
-RUN pip install -r requirements.txt 
-COPY . .
+RUN pip3 install -r requirements.txt --no-cache-dir
+COPY . /app/django
 # RUN python3 manage.py makemigrations
 # RUN python3 manage.py migrate
 # Install virtual environment
