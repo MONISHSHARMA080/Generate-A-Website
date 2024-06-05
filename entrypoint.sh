@@ -8,9 +8,15 @@ npm run dev &
 
 # Start the Django server
 cd django
-ls
+ls -la
 pwd
-python3 manage.py runserver 0.0.0.0:8000 &
+python --version
+python manage.py makemigrations
+python manage.py migrate
+# Python 3.12 --version
+# python3 -m venv /opt/venv
+# ENV PATH="/opt/venv/bin:$PATH"
+python manage.py runserver  &
 
 # Wait for any process to exit
 wait -n

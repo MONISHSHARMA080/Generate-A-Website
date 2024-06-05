@@ -12,8 +12,14 @@ COPY ./django/ ./
 RUN rm db.sqlite3
 RUN ls
 RUN pip install -r requirements.txt 
-RUN python3 manage.py makemigrations
-RUN python3 manage.py migrate
+COPY . .
+# RUN python3 manage.py makemigrations
+# RUN python3 manage.py migrate
+# Install virtual environment
+# RUN python3 -m venv /opt/venv
+
+# Activate the virtual environment
+# ENV PATH="/opt/venv/bin:$PATH"
 
 
 
