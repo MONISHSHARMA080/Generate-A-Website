@@ -6,6 +6,9 @@
 # Start the Svelte app (dev mode)
 npm run dev &
 
+# start the django server
+python3 manage.py runserver &
+
 # Wait for any process to exit
 wait -n
 
