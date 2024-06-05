@@ -13,6 +13,7 @@ RUN rm db.sqlite3
 RUN ls
 RUN pip3 install -r requirements.txt --no-cache-dir
 COPY . /app/django
+ENTRYPOINT ["python3"] 
 # RUN python3 manage.py makemigrations
 # RUN python3 manage.py migrate
 # Install virtual environment
