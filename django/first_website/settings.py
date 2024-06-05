@@ -165,7 +165,7 @@ WSGI_APPLICATION = 'first_website.wsgi.application'
 #         'PORT': os.getenv('DB_PORT'),
 #     }
 # }
-
+ 
 #  ----------db for dev./test --------
 DATABASES = {
     'default': {

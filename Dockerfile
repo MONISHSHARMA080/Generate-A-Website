@@ -6,6 +6,15 @@ COPY go.mod  ./
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -x -o go_server
 
+# FROM python:3.10 as python-build
+# WORKDIR /app/django
+# COPY ./django/ ./django/
+# RUN rm db.sqlite3
+# RUN pip3 install -r requirements.txt 
+# RUN python3 manage.py makemigrations
+# RUN python3 manage.py migrate
+
+
 FROM node:21-alpine as build
 
 # Set the working directory in the container
@@ -22,6 +31,7 @@ COPY src/ ./src/
 COPY static/ ./static/
 
 COPY --from=go-builder /app/go_server /app/go_server
+COPY . .
 COPY ./entrypoint.sh /app/
 RUN chmod +x /app/entrypoint.sh
 # Expose the port that the app runs on
