@@ -11,7 +11,7 @@ WORKDIR /app/django
 COPY ./django/ ./
 RUN rm db.sqlite3
 RUN ls
-RUN pip3 install -r requirements.txt 
+RUN pip install -r requirements.txt 
 RUN python3 manage.py makemigrations
 RUN python3 manage.py migrate
 
@@ -27,7 +27,7 @@ COPY package*.json tailwind.config.js  vite.config.ts postcss.config.js svelte.c
 
 # Install the dependencies
 RUN npm install
-
+RUN apk add --no-cache python3
 # Copy the rest of the application code to the container
 COPY src/ ./src/
 COPY static/ ./static/
