@@ -2,51 +2,27 @@ FROM golang:1.22 as go-builder
 WORKDIR /app
 COPY a.go ./
 COPY go.sum ./
-COPY go.mod  ./
+COPY go.mod ./
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -x -o go_server
 
-FROM python:3.10-alpine  as python-build
-WORKDIR /app/django
-COPY ./django/ ./
-RUN rm db.sqlite3
-RUN ls
-RUN pip3 install -r requirements.txt --no-cache-dir
-COPY . /app/django
-ENTRYPOINT ["python3"] 
-CMD [ "python manage.py runserver" ]
-# RUN python3 manage.py makemigrations
-# RUN python3 manage.py migrate
-# Install virtual environment
-# RUN python3 -m venv /opt/venv
-
-# Activate the virtual environment
-# ENV PATH="/opt/venv/bin:$PATH"
-
-
-
 FROM node:21-alpine as build
-
-# Set the working directory in the container
 WORKDIR /app
-
-# Copy package.json and package-lock.json to the container
-COPY package*.json tailwind.config.js  vite.config.ts postcss.config.js svelte.config.js  tsconfig.json ./
-
-# Install the dependencies
+COPY package*.json tailwind.config.js vite.config.ts postcss.config.js svelte.config.js tsconfig.json ./
 RUN npm install
-RUN apk add --no-cache python3
-# Copy the rest of the application code to the container
+
+
+RUN apk add --no-cache python3 py3-pip
 COPY src/ ./src/
 COPY static/ ./static/
-
 COPY --from=go-builder /app/go_server /app/go_server
-COPY --from=python-build /app/django /app/django
-COPY ./entrypoint.sh /app/
-RUN chmod +x /app/entrypoint.sh
-# Expose the port that the app runs on
-EXPOSE 5173 4696
+COPY django/ ./django/
+COPY entrypoint.sh /app/
 
-# Command to run the app in development mode
+RUN pip3 install daff==1.3.46 --break-system-packages --no-cache-dir -r django/requirements.txt
+RUN 
+RUN chmod +x /app/entrypoint.sh
+
+EXPOSE 5173 4696 8000
+
 ENTRYPOINT ["/app/entrypoint.sh"]
-# docker build -t aa .; docker run -p 4696:4696 -p 80:5173 aa

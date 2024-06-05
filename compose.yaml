@@ -6,7 +6,9 @@ services:
       - SVELTE_URL_WITH_SLASH=80
     ports:
       - "80:5173"
-      - "4696:4696"
+      - "4696:4696"      
+      - "8000:8000"
+
     command: /app/entrypoint.sh
     # networks:
     #   default:
